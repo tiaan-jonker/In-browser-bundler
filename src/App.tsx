@@ -12,7 +12,6 @@ const App = () => {
       worker: true,
       wasmURL: '/esbuild.wasm',
     })
-
   }
 
   useEffect(() => {
@@ -23,8 +22,17 @@ const App = () => {
     setInput(event.target.value)
   }
 
-  const handleClick = () => {
-    console.log(input)
+  const handleClick = async () => {
+    if (!ref.current) {
+      return
+    }
+
+    const result = await ref.current.transform(input, {
+      loader: 'jsx',
+      target: 'es2015',
+    })
+
+    setCode(result.code)
   }
 
   return (
